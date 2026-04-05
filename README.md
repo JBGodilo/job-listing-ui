@@ -1,22 +1,24 @@
 # JobConnect
 
-A modern job listing platform built with React and TypeScript, featuring advanced filtering, search, and pagination.
+A modern job listing frontend built with React 19 and TypeScript. Features checkbox-based filtering by category and job type, paginated results, URL-driven state, and animated UI — all powered by a backend API.
 
 ## Features
 
-- **Job Search** — Search jobs by title, company, or description
-- **Multi-Filter Sidebar** — Filter by category (Engineering, Design, Marketing, Sales, Product, Customer Support) and job type (Full-time, Part-time, Contract, Remote)
-- **Pagination** — Browse results with page navigation
-- **URL-Based State** — Filters and search terms are preserved in the URL
-- **Animated UI** — Smooth transitions and loading skeletons powered by Motion
+- **Multi-Filter Sidebar** — Filter by category (Engineering, Design, Marketing) and job type (Full-time, Part-time, Contract) with checkbox controls and a clear-all button
+- **Pagination** — Page navigation with previous/next buttons; scrolls to top on page change
+- **URL-Driven State** — Filters and page number are stored in URL search params and restored on navigation
+- **Animated Cards** — Staggered fade-in transitions for job cards via Motion (Framer Motion)
+- **Loading Skeletons** — Pulse-animated placeholder cards during data fetches
+- **Error Handling** — Distinct UI for client errors (4xx) and server errors (5xx) with retry support
+- **Responsive Layout** — Sidebar stacks vertically on mobile, sits alongside on desktop
 
 ## Tech Stack
 
-- **React 19** with **TypeScript**
-- **Vite** for build tooling
-- **Tailwind CSS 4** for styling
-- **React Router DOM** for client-side routing
-- **TanStack React Query** for data fetching and caching
+- **React 19** with **TypeScript 5.8**
+- **Vite 6** for build tooling
+- **Tailwind CSS 4** (via `@tailwindcss/vite` plugin)
+- **React Router DOM 7** for client-side routing and URL state
+- **TanStack React Query 5** for data fetching, caching, and retries
 - **Motion** for animations
 - **Lucide React** for icons
 
@@ -24,30 +26,36 @@ A modern job listing platform built with React and TypeScript, featuring advance
 
 ```
 src/
-├── App.tsx                # Root component (QueryClient + Router)
-├── main.tsx               # Entry point
-├── types.ts               # Shared TypeScript interfaces & enums
-├── index.css              # Tailwind imports & theme config
+├── main.tsx               # Entry point (React 19, StrictMode)
+├── App.tsx                # QueryClientProvider + BrowserRouter, single "/" route
+├── index.css              # Tailwind v4 imports, Inter font, base styles
+├── types.ts               # Job, JobsMeta, JobsResponse, JobFilters, JobCategory, JobType
 ├── components/
-│   ├── JobsPage.tsx       # Main page with search & layout
-│   ├── FiltersSidebar.tsx # Category & job type filter checkboxes
-│   ├── JobsList.tsx       # Animated job card list with loading skeleton
-│   └── Pagination.tsx     # Page navigation
+│   ├── JobsPage.tsx       # Main page: header, sidebar, job list, pagination, error states
+│   ├── FiltersSidebar.tsx # Checkbox filter groups (category, type) + clear button
+│   ├── JobsList.tsx       # Animated job cards with loading skeletons and empty state
+│   └── Pagination.tsx     # Page navigation synced to URL params
+├── hooks/
+│   └── useJobFilters.ts   # URL-driven filter state management (parse, toggle, clear)
 ├── services/
-│   └── jobService.ts      # Data fetching & filtering logic (mock data)
+│   └── jobService.ts      # fetchJobs() → GET /api/jobs, ApiError class
 └── lib/
-    └── utils.ts           # Tailwind class merge utility
+    └── utils.ts           # cn() utility (clsx + tailwind-merge)
 ```
 
-## Getting Started
+## Prerequisites
 
-**Prerequisites:** Node.js
+- **Node.js** (v18+)
+- A backend API server running on port **3001** (the Vite dev server proxies `/api` requests to `http://localhost:3001`)
+
+## Getting Started
 
 1. Install dependencies:
    ```sh
    npm install
    ```
-2. Start the dev server:
+
+2. Start the dev server (port 3000):
    ```sh
    npm run dev
    ```
