@@ -1,4 +1,4 @@
-# JobConnect
+# Job Listing
 
 A modern job listing frontend built with React 19 and TypeScript. Features checkbox-based filtering by category and job type, paginated results, URL-driven state, and animated UI — all powered by a backend API.
 
